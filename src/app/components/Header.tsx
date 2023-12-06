@@ -1,6 +1,10 @@
+import { UserButton, auth } from "@clerk/nextjs";
 import Link from "next/link";
 
 export function Header() {
+  const { userId } = auth();
+  console.log("foda == ", userId);
+
   return (
     <>
       <nav className="bg-blue-700 py-4 px-6 flex items-center justify-between mb-5">
@@ -11,13 +15,36 @@ export function Header() {
             </div>
           </Link>
         </div>
-        <div className="text-white">
-          <Link href="sign-in" className="text-gray-300 hover:text-white mr-4">
-            Sign In
-          </Link>
-          <Link href="sign-up" className="text-gray-300 hover:text-white mr-4">
-            Sign Up
-          </Link>
+        <div className="text-white flex items-center">
+          {!userId ? (
+            <>
+              <Link
+                href="sign-in"
+                className="text-gray-300 hover:text-white mr-4"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="sign-up"
+                className="text-gray-300 hover:text-white mr-4"
+              >
+                Sign Up
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                href="profile"
+                className="text-gray-300 hover:text-white mr-4"
+              >
+                Profile
+              </Link>
+
+              <div className="ml-auto">
+                <UserButton afterSignOutUrl="/" />
+              </div>
+            </>
+          )}
         </div>
       </nav>
     </>
